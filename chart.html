@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.onload = function() {
+
+var dataPoints = {
+	"None":[],
+	"Untriaged":[],
+	"Completed":[],
+	"Suitable":[],
+	"Unsuitable":[]
+};
+
+var chart = new CanvasJS.Chart("chartContainer", {
+	animationEnabled: true,
+	theme: "light2",
+	title: {
+		text: "Mozilla Iris Coverage - Firefox Desktop",
+		fontSize:18
+	},
+	legend: {
+		fontSize:12,
+		dockInsidePlotArea: true
+	},
+	axisX:{
+		interval:1,
+		labelFontSize:12,
+		labelWrap: true,
+		labelMaxWidth: 500
+	},
+	axisY:{
+		interval: 10,
+		suffix: "%",
+		labelFontSize:12
+	},
+	toolTip:{
+		shared: true
+	},
+	data: [{
+		type: "stackedBar100",
+		name: "Completed",
+		color: "green",
+		dataPoints: dataPoints.Completed,
+		showInLegend: true
+	},{
+		type: "stackedBar100",
+		name: "Suitable",
+		color: "yellow",
+		dataPoints: dataPoints.Suitable,
+		showInLegend: true
+	},{
+		type: "stackedBar100",
+		name: "Unsuitable",
+		color: "red",
+		dataPoints: dataPoints.Unsuitable,
+		showInLegend: true,
+	},{
+		type: "stackedBar100",
+		name: "Untriaged",
+		color: "purple",
+		dataPoints: dataPoints.Untriaged,
+		showInLegend: true,
+	},{
+		type: "stackedBar100",
+		name: "None",
+		color: "gray",
+		dataPoints: dataPoints.None,
+		showInLegend: true
+	}]
+});
+
+function addData(data) {
+	for (var i = 0; i < data.length; i++) {
+		dataPoints.None.push({
+			label: data[i].suite_name,
+			y: data[i].counts.None
+		});
+		dataPoints.Untriaged.push({
+			label: data[i].suite_name,
+			y: data[i].counts.Untriaged
+		});
+		dataPoints.Completed.push({
+			label: data[i].suite_name,
+			y: data[i].counts.Completed
+		});
+		dataPoints.Suitable.push({
+			label: data[i].suite_name,
+			y: data[i].counts.Suitable
+		});
+		dataPoints.Unsuitable.push({
+			label: data[i].suite_name,
+			y: data[i].counts.Unsuitable
+		});
+	}
+	chart.render();	
+}
+
+$.getJSON("mozilla-iris-coverage.json", addData);
+
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height:4800px; max-width: 1200px; margin: 0px auto;"></div>
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
