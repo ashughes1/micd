@@ -1,0 +1,61 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<script>
+window.onload = function() {
+
+
+function addData(data) {
+    var table = document.getElementById("datatable");
+    var tableHTML =  table.innerHTML;
+    for (var i=0; i<data.length; i++) {
+        if (data[i].percents.Completed <= 19) {
+            tableHTML += '<tr style="background-color:red">';
+        } else if (data[i].percents.Completed >= 20 && data[i].percents.Completed <= 39) {
+            tableHTML += '<tr style="background-color:orange">';
+        } else if (data[i].percents.Completed >= 40 && data[i].percents.Completed <= 59) {
+            tableHTML += '<tr style="background-color:yellow">';
+        } else if (data[i].percents.Completed >= 60 && data[i].percents.Completed <= 79) {
+            tableHTML += '<tr style="background-color:green">';
+        } else if (data[i].percents.Completed >= 80 && data[i].percents.Completed <= 99) {
+            tableHTML += '<tr style="background-color:blue">';
+        } else if (data[i].percents.Completed == 100) {
+            tableHTML += '<tr style="background-color:purple">';
+        } else {
+            tableHTML += '<tr>';
+        }
+        
+        tableHTML += '<td>' + data[i].suite_id + '</td>';
+        tableHTML += '<td><a href="https://testrail.stage.mozaws.net/index.php?/suites/view/' + data[i].suite_id + '">' + data[i].suite_name + '</a></td>';
+        tableHTML += '<td align="right">' + data[i].counts.Untriaged + ' [' + data[i].percents.Untriaged.toFixed(2) +'%]</td>';
+        tableHTML += '<td align="right">' + data[i].counts.Suitable + ' [' + data[i].percents.Suitable.toFixed(2) +'%]</td>';
+        tableHTML += '<td align="right">' + data[i].counts.Completed + ' [' + data[i].percents.Completed.toFixed(2) +'%]</td>';
+        tableHTML += '<td align="right">' + data[i].counts.Unsuitable + ' [' + data[i].percents.Unsuitable.toFixed(2) +'%]</td>';
+        tableHTML += '<td align="right">' + data[i].counts.None + ' [' + data[i].percents.None.toFixed(2) +'%]</td>';
+        tableHTML += '</tr>';
+    }
+    table.innerHTML = tableHTML;
+}
+
+$.getJSON("mozilla-iris-coverage.json", addData);
+
+}
+</script>
+</head>
+<body>
+<table id="datatable" style="font-family: Arial, Helvetica, sans-serif; width:100%">
+    <tr>
+        <th style='text-align: left;'>ID</th>
+        <th style='text-align: left;'>Suite</th>
+        <th style='text-align: right;'>Untriaged</th>
+        <th style='text-align: right;'>Suitable</th>
+        <th style='text-align: right;'>Completed</th>
+        <th style='text-align: right;'>Unsuitable</th>
+        <th style='text-align: right;'>None</th>
+    </tr>
+</table>
+
+<script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>
